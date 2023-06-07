@@ -1,0 +1,89 @@
+
+package com.bridgelabz.UC6;
+
+import java.sql.*;
+
+public class EmployeePayRoll {
+    public static void main(String[] args) {
+        /*
+         * connections
+         */
+        String url ="jdbc:mysql://localhost:3306/payroll_service";
+
+        String username = "root";
+        String password = "root";
+
+        /*
+         * making connection with database
+         */
+        try{
+            Connection conn = DriverManager.getConnection(url, username, password);
+            /*UC2::
+            * Creating Table*/
+            try (Statement statement = conn.createStatement()) {
+                String createTableQuery = "create table employee_payroll (id int primary key, name varchar(20), age int, gender varchar(20),address varchar(60),phoneNumber double,department varchar(20),salary double,basic_pay double," +
+                        "deductions double,taxable_pay double,income_tax double,net_pay double)";
+                statement.executeUpdate(createTableQuery);
+                System.out.println("Table is created Successfully");
+            }
+            /*UC3::
+            * Insert Value Into Table*/
+
+            try (Statement statement = conn.createStatement()) {
+                String insertQuery = "insert into employee_payroll (id,name,gender,age,address,phoneNumber,department,salary,basic_pay,deductions,taxable_pay,income_tax,net_pay)" +
+                        " values(1,'Pallavi','female',20,'pune',6578989543,'IT',5000,4000000,60000,10000,20000,1700000)," +
+                        "(2,'Ajit','male',22,'A.Nagar',567686689,'Civil',6000,5000000,30000,10000,40000,2000000)," +
+                        "(3,'Terisa','female',25,'Mumbai',545455768,'Mech',11000,3000000,90000,12000,50000,2500000)";
+                statement.executeUpdate(insertQuery);
+                System.out.println("Values Added Successfully");
+            }
+            /*UC4::
+            * Retrive All Data From Table*/
+
+            try (Statement statement = conn.createStatement()) {
+                String selectQuery = "select * from employees";
+                ResultSet resultSet = statement.executeQuery(selectQuery);
+
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String name = resultSet.getString("name");
+                    int age = resultSet.getInt("age");
+                    String address = resultSet.getString("address");
+                    double phoneNumber = resultSet.getDouble("phoneNumber");
+                    String department = resultSet.getString("department");
+                    double salary = resultSet.getDouble("salary");
+                    double basicPay = resultSet.getDouble("basic_pay");
+                    double deductions = resultSet.getDouble("deductions");
+                    double taxablePay = resultSet.getDouble("taxable_pay");
+                    double incomeTax = resultSet.getDouble("income_tax");
+                    double netPay = resultSet.getDouble("net_pay");
+
+                    System.out.println("ID :" + id + " , Name : " + name + " , Age : " + age + ", Address : " + address + " , Phone Number : " + phoneNumber + ", " +
+                            "Department : " + department + " , Salary :" + salary + " , Basic Pay : " + basicPay + " , Deductions : " + deductions + " ," +
+                            "Taxable Pay : " + taxablePay + " , Income Tax : " + incomeTax + " , Net Pay : " + netPay);
+                }
+                resultSet.close();
+            }
+            /*Update sallary */
+            try (Statement statement = conn.createStatement()){
+                String updateQuery = "update employees set basic_pay = 3000000.00 where id = 3";
+                statement.executeUpdate(updateQuery);
+                System.out.println("Basic Pay is Updated successfully");
+            }
+            try (Statement statement = conn.createStatement()){
+                String updateQuery = "update employees set salary = 20000.00 where id = 3";
+                statement.executeUpdate(updateQuery);
+                System.out.println("Salary is Updated successfully");
+            }
+            /*Delete Data*/
+            try (Statement statement = conn.createStatement()){
+                String updateQuery = "delete from employees where name = 'Pallavi'";
+                statement.executeUpdate(updateQuery);
+                System.out.println("Delete record successfully");
+            }
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+}
