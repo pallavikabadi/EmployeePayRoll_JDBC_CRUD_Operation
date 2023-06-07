@@ -40,17 +40,7 @@ public class EmployeePayRoll {
                 statement.executeUpdate(insertQuery);
                 System.out.println("Values Added Successfully");
             }
-            /*Update sallary */
-            try (Statement statement = conn.createStatement()){
-                String updateQuery = "update employees set basic_pay = 3000000.00 where id = 3";
-                statement.executeUpdate(updateQuery);
-                System.out.println("Basic Pay is Updated successfully");
-            }
-            try (Statement statement = conn.createStatement()){
-                String updateQuery = "update employees set salary = 20000.00 where id = 3";
-                statement.executeUpdate(updateQuery);
-                System.out.println("Salary is Updated successfully");
-            }
+
 
 
         }catch(SQLException e) {
